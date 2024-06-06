@@ -26,12 +26,12 @@ Define a CLI program with an Enum.
 
 ---
 
-### ludi.commons.tools.pattern.SyncPair
+### ludi.commons.pattern.SyncPair
 Holds two copies of the data, a "committed" version and a "dirty" version. You can commit the dirty version whenever necessary to sync them, and listen to callbacks based on this. Intended to be used as part of a GUI, where the committed version represents the actual state of the application, while you make changes to the dirty version before you bulk update.
 
 ---
 
-### ludi.commons.tools.pattern.Mind
+### ludi.commons.pattern.Mind
 Holds a collection of singletons, which are getserted on access by class name. Sort of hard to describe but not really complicated at all. Look at the class and you will immediately understand what it does. I'm not sure what the "official" name for this kind of pattern would be, so I just named it "Mind" because each singleton is like a concept or something.
 
 ---

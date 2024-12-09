@@ -1,5 +1,6 @@
 package ludi.commons.collections;
 
+import ludi.commons.math.MathTools;
 import haxe.Json;
 import ludi.commons.math.IVec2;
 import ludi.commons.math.MaxIntFinder;
@@ -43,6 +44,29 @@ class GridMap<T> {
 		}
 	}
 
+	public function forEachRow(func: (y: Int, row: Array<T>) -> Void): Void {
+		for (y in 0...(yMax.getMax() + 1)) {
+			var row: Array<T> = [];
+			for (x in 0...(xMax.getMax() + 1)) {
+				var item = get(x, y);
+				if (item != null) {
+					row.push(item);
+				}
+			}
+			func(y, row);
+		}
+	}
+
+
+	public function forEachCartesian(func:(x:Int, y:Int, item:T) -> Void):Void {
+		for (x in 0...(xMax.getMax() + 1)) {
+			for (y in 0...(yMax.getMax() + 1)) {
+				var check = get(x, y);
+				func(x, y, check);
+			}
+		}
+	}
+
 	public function add(x:Int, y:Int, item:T):Void {
 		xMax.consume(x);
 		yMax.consume(y);
@@ -69,6 +93,17 @@ class GridMap<T> {
 		return true;
 	}
 
+	public function flatten(): Array<T> {
+		var result: Array<T> = [];
+
+		forEach((x,y,item) -> {
+			result.push(item);
+		});
+
+		return result;
+	}
+	
+
 	public function get(x:Int, y:Int):T {
 		if (data[x] == null) {
 			data[x] = new Map<Int, T>();
@@ -83,7 +118,7 @@ class GridMap<T> {
 			data: flatData,
 			xMax: xMax.getMax(),
 			yMax: yMax.getMax()
-		});
+		}, " ");
 	}
 
 	public static function deserialize<T>(json:String):GridMap<T> {
@@ -98,6 +133,39 @@ class GridMap<T> {
 			grid.add(item.x, item.y, item.item);
 		}
 		return grid;
+	}
+
+	public function translate(delta: IVec2): GridMap<T> {
+		var translatedGrid = new GridMap<T>();
+		
+		this.forEach((x, y, item) -> {
+			var newX = x + delta.x;
+			var newY = y + delta.y;
+			translatedGrid.add(newX, newY, item);
+		});
+		
+		return translatedGrid;
+	}
+
+	public function normalize(): GridMap<T> {
+		var minX = MathTools.INT_MAX;
+		var minY = MathTools.INT_MAX;
+	
+		forEach((x, y, item) -> {
+			if (x < minX) minX = x;
+			if (y < minY) minY = y;
+		});
+	
+		var topLeftItem: T = null;
+		forEach((x, y, item) -> {
+			if (x == minX && y <= minY || y == minY && x <= minX) {
+				topLeftItem = item;
+				minY = y; 
+			}
+		});
+	
+		var delta = new IVec2(-minX, -minY);
+		return this.translate(delta);
 	}
 
 	public function clone():GridMap<T> {
@@ -117,6 +185,13 @@ class GridMap<T> {
 			}
 		});
 	}
+
+	public function clear() {
+		data = [];
+		xMax = new MaxIntFinder();
+		yMax = new MaxIntFinder();
+	}
+	
 
 	public function truncateTo(xMaxLimit:Int, yMaxLimit:Int):Void {
 		var positionsToRemove = [];

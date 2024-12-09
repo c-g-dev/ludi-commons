@@ -1,8 +1,6 @@
 package ludi.commons.model;
 
-enum Direction {
+enum UpDown {
     Up;
-    Right;
     Down;
-    Left;
 }

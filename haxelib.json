@@ -1,6 +1,7 @@
 {
     "name": "ludi-commons",
-    "description": "",
+    "url" : "https://github.com/c-g-dev/ludi-commons",
+    "description": "yet another haxe util lib",
     "license": "MIT",
     "tags": [
       "cross", "utility"
@@ -9,8 +10,8 @@
     "contributors": [
       "cgdev"
     ],
-    "releasenote": "Initial release",
-    "version": "0.0.1",
+    "releasenote": "Bugfixes, new methods, extensions, data objects, and macros",
+    "version": "0.0.3",
     "dependencies": {
 		"uuid": ""
 	}

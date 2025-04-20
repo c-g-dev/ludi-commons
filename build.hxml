@@ -1,0 +1,9 @@
+-cp src
+
+-lib uuid
+
+--macro include('ludi.commons')
+
+-hl build.hl
+
+-main Main

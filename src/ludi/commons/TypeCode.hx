@@ -47,3 +47,6 @@ abstract TypeCode(String) to String from String {
 interface RequiresTypeCode {
     public var typecode: TypeCode;
 }
+
+@:autoBuild(ludi.commons.macro.InjectTypeCodeMacro.build())
+interface InjectTypeCode {}

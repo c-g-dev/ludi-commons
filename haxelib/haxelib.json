@@ -10,7 +10,7 @@
   "contributors": [
     "cgdev"
   ],
-  "releasenote": "Generic plugin system, Typecode, new macros, etc",
+  "releasenote": "InjectTypeCode + macro",
   "version": "0.0.4",
   "dependencies": {
     "uuid": ""
